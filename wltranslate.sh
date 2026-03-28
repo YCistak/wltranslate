@@ -1,24 +1,17 @@
 #!/bin/bash
-# wltranslate - Wayland OCR Translation Tool
-# https://github.com/asaf/wltranslate
+IMG=/tmp/ocr-shot.png
 
-LANG_TO="${1:-tr}"
-IMG=/tmp/wltranslate-shot.png
-TEXT_FILE=/tmp/wltranslate-text
-
-grim -g "$(slurp)" "$IMG" || { notify-send "wltranslate" "Ekran yakalama başarısız."; exit 1; }
-
-tesseract "$IMG" "$TEXT_FILE" 2>/dev/null || { notify-send "wltranslate" "OCR başarısız."; exit 1; }
+SELECTION=$(slurp 2>/dev/null) || exit 0
+grim -g "$SELECTION" "$IMG" || exit 0
+tesseract "$IMG" /tmp/ocr-text 2>/dev/null
+TEXT=$(cat /tmp/ocr-text.txt)
 
 TRANSLATED=$(python3 -c "
 from googletrans import Translator
-text = open('${TEXT_FILE}.txt').read().strip()
-if not text:
-    print('Metin bulunamadı.')
-    exit()
+text = open('/tmp/ocr-text.txt').read().strip()
 t = Translator()
-result = t.translate(text, dest='${LANG_TO}')
+result = t.translate(text, dest='tr')
 print(result.text)
 ")
 
-notify-send "wltranslate" "$TRANSLATED"
+python3 ~/.local/bin/wltranslate-popup.py "$TRANSLATED"
