@@ -1,8 +1,8 @@
 # wltranslate
 
-Wayland'da ekrandan alan seç, metni tanı, çevir — bildirim olarak göster.
+Select an area on your Wayland screen, extract the text via OCR, and get a translated notification instantly.
 
-## Bağımlılıklar
+## Dependencies
 
 - grim
 - slurp
@@ -10,38 +10,39 @@ Wayland'da ekrandan alan seç, metni tanı, çevir — bildirim olarak göster.
 - python3
 - googletrans
 
-## Kurulum
+## Installation
 
-```bash
-git clone https://github.com/asaf/wltranslate
+\```bash
+git clone https://github.com/YCistak/wltranslate
 cd wltranslate
 chmod +x install.sh
 ./install.sh
-```
+\```
 
-## Kullanım
+## Usage
 
-```bash
-wltranslate          # Türkçeye çevirir (varsayılan)
-wltranslate en       # İngilizceye çevirir
-wltranslate de       # Almancaya çevirir
-```
+\```bash
+wltranslate          # Translates to Turkish (default)
+wltranslate en       # Translates to English
+wltranslate de       # Translates to German
+\```
 
-## Hyprland Kısayolu
+## Keybind (Hyprland)
 
-`~/.config/hypr/hyprland.conf` dosyasına ekle:
-
+Add to `~/.config/hypr/hyprland.conf`:
 ```
 bind = ALT, V, exec, wltranslate
 ```
 
-## Nasıl Çalışır
+Other compositors (Sway, etc.) have their own keybind configuration — refer to your compositor's documentation.`
 
-1. `grim + slurp` — ekrandan alan seçilir, PNG kaydedilir
-2. `tesseract` — PNG'den metin okunur (OCR)
-3. `googletrans` — metin Google Translate'e gönderilir
-4. `notify-send` — çeviri bildirim olarak gösterilir
+## How It Works
 
-## Lisans
+1. grim + slurp — select an area on screen, save as PNG
+2. tesseract — extract text from PNG (OCR)
+3. googletrans — send text to Google Translate
+4. notify-send — display translation as a notification
+
+## License
 
 MIT
